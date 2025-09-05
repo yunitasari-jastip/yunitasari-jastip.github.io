@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JastipYntsr - Open Jastip Thailand</title>
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- AOS Animation -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #fef6ff;
+      color: #333;
+    }
+
+    /* Navbar */
+    .navbar {
+      background-color: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      padding: 12px 0;
+      transition: all 0.3s ease;
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #ff4da6 !important;
+    }
+
+    .nav-link {
+      font-weight: 500;
+      color: #555 !important;
+      margin-left: 15px;
+      transition: color 0.3s ease;
+    }
+
+    .nav-link:hover {
+      color: #ff4da6 !important;
+    }
+
+    .cart-icon {
+      position: relative;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .cart-badge {
+      position: absolute;
+      top: -6px;
+      right: -10px;
+      background: #ff4da6;
+      color: white;
+      font-size: 12px;
+      padding: 2px 6px;
+      border-radius: 50%;
+    }
+
+    /* Hero Section */
+    #hero {
+      position: relative;
+      background: url('https://source.unsplash.com/1600x600/?bangkok,thailand,shopping') center/cover no-repeat;
+      color: white;
+      text-align: center;
+      padding: 120px 20px;
+      border-bottom-left-radius: 30px;
+      border-bottom-right-radius: 30px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    #hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,77,166,0.7), rgba(0,198,255,0.7));
+      border-bottom-left-radius: 30px;
+      border-bottom-right-radius: 30px;
+    }
+
+    #hero .container {
+      position: relative;
+      z-index: 2;
+    }
+
+    #hero h1 {
+      font-weight: 700;
+      font-size: 2.4rem;
+    }
+
+    #hero p {
+      font-size: 1.1rem;
+      margin-top: 10px;
+    }
+
+    .btn-hero {
+      background: #ff4da6;
+      color: white;
+      font-weight: 600;
+      border-radius: 25px;
+      padding: 12px 30px;
+      margin-top: 20px;
+      transition: 0.3s;
+      box-shadow: 0 5px 15px rgba(255,77,166,0.5);
+    }
+
+    .btn-hero:hover {
+      background: #e33e92;
+      transform: translateY(-2px);
+    }
+
+    /* Search & Filter */
+    #search-bar {
+      margin-bottom: 20px;
+    }
+
+    /* Produk */
+    .product-card {
+      background: linear-gradient(145deg, #ffffff, #fef6ff);
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+      padding: 15px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-7px) scale(1.02);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      transition: transform 0.3s ease;
+    }
+
+    .product-card img:hover {
+      transform: scale(1.05);
+    }
+
+    .product-card h5 {
+      font-weight: 600;
+      margin-top: 10px;
+      color: #222;
+    }
+
+    .product-card p {
+      color: #ff4da6;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 5px 0 12px;
+    }
+
+    /* Floating WhatsApp */
+    .wa-float {
+      position: fixed;
+      width: 55px;
+      height: 55px;
+      bottom: 20px;
+      right: 20px;
+      background-color: #25d366;
+      color: #fff;
+      border-radius: 50px;
+      text-align: center;
+      font-size: 28px;
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+      z-index: 100;
+      transition: all 0.3s ease;
+    }
+
+    .wa-float:hover {
+      background-color: #1ebc5b;
+      transform: scale(1.1);
+    }
+
+    /* Footer */
+    footer {
+      background-color: #1a1a1a;
+      color: white;
+      padding: 25px 0;
+      margin-top: 50px;
+    }
+
+    footer a {
+      color: #00c6ff;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    footer a:hover {
+      color: #ff4da6;
+    }
+
+    /* Loading Spinner */
+    #loading {
+      display: none;
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg fixed-top shadow-sm">
+    <div class="container">
+      <a class="navbar-brand" href="#">JastipYntsr</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item"><a class="nav-link" href="#produk">Daftar Barang</a></li>
+          <li class="nav-item"><a class="nav-link" href="#cara">Cara Titip</a></li>
+          <li class="nav-item"><a class="nav-link" href="#kontak">Kontak</a></li>
+          <li class="nav-item ms-3 cart-icon" onclick="openCart()">
+            🛒 <span id="cart-count" class="cart-badge">0</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero" class="text-center text-white">
+    <div class="container">
+      <h1 data-aos="fade-up">Open Jastip Thailand 2025</h1>
+      <p data-aos="fade-up" data-aos-delay="200">Dapatkan barang original Thailand dengan harga terbaik!</p>
+      <a href="#produk" class="btn btn-hero shadow" data-aos="zoom-in" data-aos-delay="400">Lihat Barang</a>
+    </div>
+  </section>
+
+  <!-- PRODUK -->
+  <section id="produk" class="py-5">
+    <div class="container">
+      <h2 class="text-center mb-4 fw-bold" data-aos="fade-up">Daftar Barang</h2>
+
+      <!-- Search & Filter -->
+      <div id="search-bar" class="row mb-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="col-md-8">
+          <input type="text" id="searchInput" class="form-control" placeholder="Cari produk...">
+        </div>
+        <div class="col-md-4">
+          <select id="filterKategori" class="form-select">
+            <option value="all">Semua Kategori</option>
+            <option value="skincare">Skincare</option>
+            <option value="fashion">Fashion</option>
+            <option value="makanan">Makanan</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row" id="product-list"></div>
+      <div id="loading">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="mt-2">Memuat produk...</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FLOATING WHATSAPP -->
+  <a href="https://wa.me/6285172215750" class="wa-float" target="_blank">
+    <i>💬</i>
+  </a>
+
+  <!-- FOOTER -->
+  <footer id="kontak" class="text-center">
+    <p>Hubungi via WhatsApp: 
+      <a href="https://wa.me/6285172215750" target="_blank">+62 851-7221-5750</a>
+    </p>
+    <p>Instagram: 
+      <a href="https://www.instagram.com/heyyunita_sr" target="_blank">@heyyunita_sr</a>
+    </p>
+    <p>&copy; 2025 JastipYntsr. All Rights Reserved.</p>
+  </footer>
+
+  <!-- MODAL KERANJANG -->
+  <div class="modal fade" id="cartModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Keranjang Belanja</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body" id="cart-items">
+          <p class="text-center text-muted">Keranjang masih kosong</p>
+        </div>
+        <div class="modal-footer">
+          <h5 class="me-auto">Total: Rp <span id="cart-total">0</span></h5>
+          <button class="btn btn-success" onclick="checkoutCart()">Checkout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase Realtime Script -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+    import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDYlo4dhx7poDN0nkb9fU5N7jUcK_KR06E",
+      authDomain: "jastip-yntsr-2a7f3.firebaseapp.com",
+      projectId: "jastip-yntsr-2a7f3",
+      storageBucket: "jastip-yntsr-2a7f3.firebasestorage.app",
+      messagingSenderId: "483670423997",
+      appId: "1:483670423997:web:d23562be2cbdf1e793fad4"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const productList = document.getElementById("product-list");
+    const searchInput = document.getElementById("searchInput");
+    const filterKategori = document.getElementById("filterKategori");
+
+    let allProducts = [];
+    let cart = [];
+
+    function renderProducts(products) {
+      productList.innerHTML = "";
+      products.forEach((product, index) => {
+        productList.innerHTML += `
+          <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="${index*100}">
+            <div class="product-card">
+              <img src="${product.foto}" alt="${product.nama}">
+              <h5>${product.nama}</h5>
+              <p>Rp ${product.harga.toLocaleString()}</p>
+              <button class="btn btn-primary" onclick="addToCart('${product.nama}', ${product.harga}, '${product.foto}')">
+                Tambah ke Keranjang
+              </button>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    // Firestore realtime listener
+    onSnapshot(collection(db, "produk"), (snapshot) => {
+      allProducts = [];
+      snapshot.forEach(doc => allProducts.push(doc.data()));
+      renderProducts(allProducts);
+    });
+
+    // Search & Filter
+    searchInput.addEventListener("input", () => {
+      const keyword = searchInput.value.toLowerCase();
+      const filtered = allProducts.filter(p => p.nama.toLowerCase().includes(keyword));
+      renderProducts(filtered);
+    });
+
+    filterKategori.addEventListener("change", () => {
+      const kategori = filterKategori.value;
+      if (kategori === "all") renderProducts(allProducts);
+      else renderProducts(allProducts.filter(p => p.kategori === kategori));
+    });
+
+    // Keranjang
+    window.addToCart = function(nama, harga, foto) {
+      const existing = cart.find(item => item.nama === nama);
+      if (existing) existing.jumlah += 1;
+      else cart.push({ nama, harga, foto, jumlah: 1 });
+
+      document.getElementById("cart-count").innerText = cart.length;
+      renderCart();
+      alert(`${nama} berhasil ditambahkan ke keranjang!`);
+    };
+
+    function renderCart() {
+      const cartItems = document.getElementById("cart-items");
+      const cartTotal = document.getElementById("cart-total");
+
+      if (cart.length === 0) {
+        cartItems.innerHTML = `<p class="text-center text-muted">Keranjang masih kosong</p>`;
+        cartTotal.textContent = "0";
+        return;
+      }
+
+      let total = 0;
+      cartItems.innerHTML = `
+        <table class="table table-bordered align-middle text-center">
+          <thead>
+            <tr>
+              <th>Pilih</th>
+              <th>Foto</th>
+              <th>Nama Produk</th>
+              <th>Jumlah</th>
+              <th>Harga</th>
+              <th>Subtotal</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${cart.map((item, i) => {
+              const subtotal = item.harga * item.jumlah;
+              total += subtotal;
+              return `
+                <tr>
+                  <td><input type="checkbox" class="form-check-input" name="checkoutItem" value="${i}"></td>
+                  <td><img src="${item.foto}" alt="${item.nama}" style="width:60px;height:60px;border-radius:8px;"></td>
+                  <td>${item.nama}</td>
+                  <td>
+                    <div class="d-flex justify-content-center align-items-center">
+                      <button class="btn btn-sm btn-outline-secondary" onclick="updateQuantity(${i}, -1)">−</button>
+                      <input type="number" class="form-control text-center mx-2" style="width:60px" value="${item.jumlah}" min="1" onchange="updateQuantity(${i}, this.value, true)">
+                      <button class="btn btn-sm btn-outline-secondary" onclick="updateQuantity(${i}, 1)">+</button>
+                    </div>
+                  </td>
+                  <td>Rp ${item.harga.toLocaleString()}</td>
+                  <td>Rp ${(item.harga * item.jumlah).toLocaleString()}</td>
+                  <td><button class="btn btn-sm btn-danger" onclick="removeFromCart(${i})">Hapus</button></td>
+                </tr>
+              `;
+            }).join("")}
+          </tbody>
+        </table>
+      `;
+      cartTotal.textContent = total.toLocaleString();
+    }
+
+    window.updateQuantity = function(i, val, isInput = false) {
+      if (isInput) cart[i].jumlah = parseInt(val) || 1;
+      else cart[i].jumlah = Math.max(1, cart[i].jumlah + val);
+      renderCart();
+    };
+
+    window.removeFromCart = function(i) {
+      cart.splice(i,1);
+      document.getElementById("cart-count").innerText = cart.length;
+      renderCart();
+    };
+
+    window.openCart = function() {
+      renderCart();
+      const modal = new bootstrap.Modal(document.getElementById("cartModal"));
+      modal.show();
+    };
+
+    window.checkoutCart = function() {
+      const selected = document.querySelectorAll('input[name="checkoutItem"]:checked');
+      if (selected.length===0) { alert("Pilih minimal satu produk untuk checkout!"); return; }
+
+      const namaPembeli = prompt("Masukkan Nama Anda:"); if (!namaPembeli) return;
+      const alamat = prompt("Masukkan Alamat Lengkap Anda:"); if (!alamat) return;
+
+      let pesan = `Halo Admin, saya mau titip barang:\n\nNama: ${namaPembeli}\nAlamat Lengkap: ${alamat}\n\nDaftar Barang:\n`;
+      let total = 0;
+      selected.forEach(cb=>{
+        const i = parseInt(cb.value);
+        const item = cart[i];
+        const subtotal = item.harga * item.jumlah;
+        total += subtotal;
+        pesan += `\n📌 *${item.nama}*\nJumlah: ${item.jumlah}\nHarga: Rp ${item.harga.toLocaleString()}\nSubtotal: Rp ${subtotal.toLocaleString()}\nFoto: ${item.foto}\n`;
+      });
+      pesan += `\nTotal Harga: Rp ${total.toLocaleString()}\n\nTerima kasih! 🙏`;
+      window.open(`https://wa.me/6285172215750?text=${encodeURIComponent(pesan)}`, "_blank");
+    };
+  </script>
+
+  <!-- Bootstrap & AOS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>AOS.init();</script>
+</body>
+</html>
