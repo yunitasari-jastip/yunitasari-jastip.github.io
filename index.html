@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JastipYntsr - Open Jastip Thailand</title>
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f8f9fa;
+    }
+
+    /* Navbar */
+    .navbar {
+      background-color: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .navbar-brand {
+      font-weight: bold;
+      color: #007bff !important;
+    }
+
+    /* Hero */
+    #hero {
+      background-color: #007bff;
+      color: white;
+      text-align: center;
+      padding: 80px 20px;
+    }
+
+    /* Produk */
+    .product-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 15px;
+      text-align: center;
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    footer {
+      background-color: #212529;
+      color: white;
+      padding: 20px 0;
+      margin-top: 40px;
+    }
+
+    footer a {
+      color: #0dcaf0;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#">JastipYntsr</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#produk">Daftar Barang</a></li>
+          <li class="nav-item"><a class="nav-link" href="#cara">Cara Titip</a></li>
+          <li class="nav-item"><a class="nav-link" href="#kontak">Kontak</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero" class="text-center text-white">
+    <div class="container">
+      <h1>Open Jastip Thailand 2025</h1>
+      <p>Dapatkan barang original Thailand dengan fee murah!</p>
+      <a href="#produk" class="btn btn-light btn-lg mt-3">Lihat Barang</a>
+    </div>
+  </section>
+
+  <!-- PRODUK -->
+  <section id="produk" class="py-5">
+    <div class="container">
+      <h2 class="text-center mb-4">Daftar Barang</h2>
+      <div class="row" id="product-list">
+        <!-- Produk otomatis dari Firebase -->
+      </div>
+    </div>
+  </section>
+
+  <!-- CARA TITIP -->
+  <section id="cara" class="bg-light py-5">
+    <div class="container text-center">
+      <h2 class="mb-4">Cara Titip</h2>
+      <div class="row g-4">
+        <div class="col-md-3"><div class="step-card">1. Pilih Barang</div></div>
+        <div class="col-md-3"><div class="step-card">2. Isi Form Pemesanan</div></div>
+        <div class="col-md-3"><div class="step-card">3. Lakukan Pembayaran</div></div>
+        <div class="col-md-3"><div class="step-card">4. Barang Dikirim</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="kontak" class="bg-dark text-white text-center py-4">
+    <p>Hubungi via WhatsApp: 
+      <a href="https://wa.me/6285172215750" target="_blank" class="text-white">+62 851-7221-5750</a>
+    </p>
+    <p>Instagram: 
+      <a href="https://www.instagram.com/heyyunita_sr" target="_blank" class="text-white">@heyyunita_sr</a>
+    </p>
+    <p>&copy; 2025 JastipYntsr. All Rights Reserved.</p>
+  </footer>
+
+  <!-- Firebase Modular v9 -->
+  <script type="module">
+    // Import Firebase SDK
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+    // Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyDYlo4dhx7poDN0nkb9fU5N7jUcK_KR06E",
+      authDomain: "jastip-yntsr-2a7f3.firebaseapp.com",
+      projectId: "jastip-yntsr-2a7f3",
+      storageBucket: "jastip-yntsr-2a7f3.firebasestorage.app",
+      messagingSenderId: "483670423997",
+      appId: "1:483670423997:web:d23562be2cbdf1e793fad4"
+    };
+
+    // Init Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const productList = document.getElementById("product-list");
+
+    // Ambil data produk dari Firestore
+    async function loadProducts() {
+      const querySnapshot = await getDocs(collection(db, "produk"));
+      productList.innerHTML = "";
+
+      querySnapshot.forEach((doc) => {
+        const product = doc.data();
+        productList.innerHTML += `
+          <div class="col-md-4 mb-4">
+            <div class="product-card">
+              <img src="${product.foto}" alt="${product.nama}">
+              <h5>${product.nama}</h5>
+              <p>Rp ${product.harga.toLocaleString()} + Fee Rp 50.000</p>
+              <button class="btn btn-primary" onclick="orderProduct('${product.nama}', ${product.harga})">
+                Titip Sekarang
+              </button>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    // Pesan via WA
+    window.orderProduct = function(nama, harga) {
+      const pesan = `Halo, saya mau titip barang:\n\nBarang: ${nama}\nHarga: Rp ${harga.toLocaleString()}`;
+      window.open(`https://wa.me/6285172215750?text=${encodeURIComponent(pesan)}`);
+    }
+
+    loadProducts();
+  </script>
+</body>
+</html>
