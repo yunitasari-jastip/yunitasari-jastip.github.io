@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Foto ke URL Converter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    input {
+      margin: 20px 0;
+    }
+    textarea {
+      width: 80%;
+      height: 100px;
+      margin-top: 20px;
+    }
+    img {
+      max-width: 300px;
+      margin-top: 20px;
+      border: 1px solid #ddd;
+      padding: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Converter Foto ke URL</h2>
+  <input type="file" id="upload" accept="image/*"><br>
+  <textarea id="output" readonly placeholder="URL akan muncul di sini..."></textarea>
+  <br>
+  <img id="preview" src="" alt="Preview akan muncul di sini">
+  
+  <script>
+    document.getElementById("upload").addEventListener("change", function(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById("output").value = e.target.result;
+          document.getElementById("preview").src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  </script>
+</body>
+</html>
